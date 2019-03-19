@@ -11,4 +11,8 @@ class LocationsService(
     fun save(location: Location) {
         repository.save(location)
     }
+
+    fun getAll(): List<Location> {
+        return repository.findAll().toList()
+    }
 }

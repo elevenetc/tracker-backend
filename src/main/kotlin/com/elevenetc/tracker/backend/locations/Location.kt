@@ -15,7 +15,7 @@ class Location {
     @Column(name = "lon")
     var lon: Double = 0.0
 
-    @Column(name = "motoId")
+    @Column(name = "moto_id")
     var motoId: Long = 0
 
     override fun equals(other: Any?): Boolean {
