@@ -1,0 +1,23 @@
+version: '1.0.0'
+services:
+  tracker:
+    image: tracker:1.0.0
+    ports:
+      - 8080:8080
+    depends_on:
+      - tracker-database
+    environment:
+      - TRACKER_DB_URL=tracker-database
+      - TRACKER_DB_PORT=3306
+      - TRACKER_DB_NAME=tracker
+      - TRACKER_DB_USER_NAME=root
+      - TRACKER_DB_PASSWORD=password
+      - TRACKER_ACTIVE_PROFILES=production
+  tracker-database:
+    image: mysql:8.0.15
+    environment:
+      - MYSQL_USER=root
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_PASSWORD=password
+      - MYSQL_DATABASE=tracker
+      - MYSQL_ONETIME_PASSWORD=true
