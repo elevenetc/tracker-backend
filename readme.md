@@ -8,7 +8,7 @@
 ```
 ## Build Docker Image
 ```bash
-docker build -t tracker .
+docker build -t tracker:1.0.0 .
 ```
 ## Run
 ```bash
