@@ -27,7 +27,7 @@ import java.nio.charset.Charset
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestPropertySource(locations = ["classpath:application-tests.properties"])
-class TrackerBackendApplicationTests {
+class AppTests {
 
 
     val contentType = MediaType(MediaType.APPLICATION_JSON.type, MediaType.APPLICATION_JSON.subtype, Charset.forName("utf8"))
