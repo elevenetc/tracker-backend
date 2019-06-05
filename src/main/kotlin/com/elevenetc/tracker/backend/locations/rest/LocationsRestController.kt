@@ -2,7 +2,6 @@ package com.elevenetc.tracker.backend.locations.rest
 
 import com.elevenetc.tracker.backend.locations.Location
 import com.elevenetc.tracker.backend.locations.LocationsService
-import com.elevenetc.tracker.backend.locations.dto.LocationDTO
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
@@ -25,9 +24,9 @@ class LocationsRestController {
     }
 
     @GetMapping("/location")
-    fun locations(): List<LocationDTO> {
+    fun locations(): List<LocationDto> {
         return locationsService.getAll().map {
-            LocationDTO(it.lat, it.lon)
+            LocationDto(it.lat, it.lon)
         }
     }
 }
