@@ -1,4 +1,4 @@
-package com.elevenetc.tracker.backend
+package com.elevenetc.tracker.backend.users
 
 import com.elevenetc.tracker.backend.motos.Motorcycle
 import javax.persistence.*
@@ -13,6 +13,15 @@ class User {
     @Column(name = "name")
     var name: String = ""
 
-    @OneToMany(mappedBy = "users")
+    @Column(name = "email")
+    var email: String = ""
+
+    @Column(name = "password")
+    var password: String = ""
+
+    @Column(name = "password_salt")
+    var passwordSalt: String = ""
+
+    @OneToMany(mappedBy = "user")
     lateinit var motorcycles: List<Motorcycle>
 }
