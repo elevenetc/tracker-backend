@@ -19,7 +19,6 @@ class LocationsRestController {
         val loc = Location()
         loc.lat = location.lat
         loc.lon = location.lon
-        loc.motoId = location.motoId.toLong()
         locationsService.save(loc)
     }
 

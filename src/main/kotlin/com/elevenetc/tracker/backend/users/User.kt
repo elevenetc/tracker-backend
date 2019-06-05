@@ -1,5 +1,6 @@
 package com.elevenetc.tracker.backend.users
 
+import com.elevenetc.tracker.backend.authentication.AccessToken
 import com.elevenetc.tracker.backend.motos.Motorcycle
 import javax.persistence.*
 
@@ -24,4 +25,7 @@ class User {
 
     @OneToMany(mappedBy = "user")
     lateinit var motorcycles: List<Motorcycle>
+
+    @OneToMany(mappedBy = "user")
+    lateinit var accessTokens: List<AccessToken>
 }

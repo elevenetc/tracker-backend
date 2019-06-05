@@ -1,9 +1,9 @@
 package com.elevenetc.tracker.backend.users.rest
 
-import com.elevenetc.tracker.backend.users.User
 import com.elevenetc.tracker.backend.users.UsersService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
+import java.util.*
 
 @RestController
 class UsersRestController {
@@ -12,12 +12,8 @@ class UsersRestController {
     lateinit var service: UsersService
 
     @PostMapping("/user")
-    fun post(@RequestBody u: CreateUser) {
-        val user = User().apply {
-            email = u.email
-            name = u.name
-        }
-        service.save(user)
+    fun post(@RequestBody u: CreateUser): UUID {
+        return service.createNewUser(u.email, u.password, u.name)
     }
 
     @GetMapping("/user")
