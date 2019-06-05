@@ -12,7 +12,17 @@ class UsersRestController {
     lateinit var service: UsersService
 
     @PostMapping("/user")
-    fun post(@RequestBody u: CreateUser): UUID {
+    fun register(@RequestBody u: RegisterUser): UUID {
+        return service.createNewUser(u.email, u.password, u.name)
+    }
+
+    @PostMapping("/user/login")
+    fun login(@RequestBody u: Login): UUID {
+        return service.login(u.email, u.password)
+    }
+
+    @PostMapping("/user/logout")
+    fun logout(@RequestBody u: RegisterUser): UUID {
         return service.createNewUser(u.email, u.password, u.name)
     }
 
