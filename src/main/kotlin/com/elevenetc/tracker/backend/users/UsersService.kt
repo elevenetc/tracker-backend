@@ -35,6 +35,16 @@ class UsersService(
         }
     }
 
+    fun logout(email: String, token: String) {
+        if (usersRepository.existsByEmail(email)) {
+            tokensRepository.delete(
+                    tokensRepository.getByValue(UUID.fromString(token))
+            )
+        } else {
+            throw RuntimeException("user $email doesn't exitst")
+        }
+    }
+
     fun createNewUser(email: String, password: String, name: String): UUID {
 
         val salt = UUID.randomUUID().toString()
@@ -48,11 +58,6 @@ class UsersService(
         })
 
         return createNewToken(user)
-    }
-
-
-    fun getAll(): List<User> {
-        return usersRepository.findAll().toList()
     }
 
     private fun hashPassword(password: String, salt: String): String {

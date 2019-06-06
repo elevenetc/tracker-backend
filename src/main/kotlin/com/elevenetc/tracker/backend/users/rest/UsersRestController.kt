@@ -2,8 +2,9 @@ package com.elevenetc.tracker.backend.users.rest
 
 import com.elevenetc.tracker.backend.users.UsersService
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.web.bind.annotation.*
-import java.util.*
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RestController
 
 @RestController
 class UsersRestController {
@@ -12,29 +13,17 @@ class UsersRestController {
     lateinit var service: UsersService
 
     @PostMapping("/user")
-    fun register(@RequestBody u: RegisterUser): UUID {
-        return service.createNewUser(u.email, u.password, u.name)
+    fun register(@RequestBody u: RegisterUser): UserDto {
+        return UserDto(service.createNewUser(u.email, u.password, u.name))
     }
 
     @PostMapping("/user/login")
-    fun login(@RequestBody u: Login): UUID {
-        return service.login(u.email, u.password)
+    fun login(@RequestBody u: Login): UserDto {
+        return UserDto(service.login(u.email, u.password))
     }
 
     @PostMapping("/user/logout")
-    fun logout(@RequestBody u: RegisterUser): UUID {
-        return service.createNewUser(u.email, u.password, u.name)
-    }
-
-    @GetMapping("/user")
-    fun get(): List<UserDto> {
-        return service.getAll().map {
-            UserDto(it.id.toString(), it.email)
-        }
-    }
-
-    @DeleteMapping("/user")
-    fun delete(@RequestBody user: DeleteUser) {
-        service.delete(user.id)
+    fun logout(@RequestBody u: Logout) {
+        service.logout(u.email, u.token)
     }
 }

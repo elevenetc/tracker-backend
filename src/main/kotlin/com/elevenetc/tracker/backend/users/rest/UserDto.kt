@@ -1,6 +1,7 @@
 package com.elevenetc.tracker.backend.users.rest
 
+import java.util.*
+
 data class UserDto(
-        val id: String,
-        val email: String
+        val token: UUID
 )

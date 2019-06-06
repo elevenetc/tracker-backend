@@ -1,6 +1,6 @@
 package com.elevenetc.tracker.backend.locations
 
-import com.elevenetc.tracker.backend.motos.Motorcycle
+import com.elevenetc.tracker.backend.motorcycles.Motorcycle
 import javax.persistence.*
 
 

@@ -1,4 +1,4 @@
-package com.elevenetc.tracker.backend.motos
+package com.elevenetc.tracker.backend.motorcycles
 
 import com.elevenetc.tracker.backend.locations.Location
 import com.elevenetc.tracker.backend.users.User

@@ -1,7 +1,7 @@
 package com.elevenetc.tracker.backend.users
 
 import com.elevenetc.tracker.backend.authentication.AccessToken
-import com.elevenetc.tracker.backend.motos.Motorcycle
+import com.elevenetc.tracker.backend.motorcycles.Motorcycle
 import javax.persistence.*
 
 @Entity
