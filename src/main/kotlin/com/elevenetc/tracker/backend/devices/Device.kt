@@ -35,4 +35,29 @@ class Device {
     @ManyToOne
     @JoinColumn(name = "motorcycle_id")
     lateinit var motorcycle: Motorcycle
+
+    enum class Mode {
+        TRACKER("tracker"), VIEWER("viewer");
+
+        val value: String
+
+        constructor(value: String) {
+            this.value = value
+        }
+
+
+
+        companion object {
+            fun of(v: String): Mode? {
+                return if (v == TRACKER.value) {
+                    TRACKER
+                } else if (v == VIEWER.value) {
+                    VIEWER
+                } else {
+                    null
+                }
+            }
+        }
+    }
+
 }

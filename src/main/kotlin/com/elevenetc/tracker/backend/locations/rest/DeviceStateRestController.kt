@@ -21,9 +21,4 @@ class DeviceStateRestController {
         authenticationService.verifyAndGet(body.token)
         deviceStateService.save(body.lat, body.lon, body.battery, body.deviceId)
     }
-
-    @PostMapping("/device/state/mode")
-    fun mode(@RequestBody body: DeviceStateBody) {
-
-    }
 }

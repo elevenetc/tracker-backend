@@ -23,19 +23,33 @@ class UsersService(
         return usersRepository.findByIdOrNull(id)!!
     }
 
-    fun login(email: String, password: String): UUID {
+    fun login(
+            email: String, password: String,
+            deviceHardwareId: String,
+            deviceName: String,
+            deviceManufacturer: String
+    ): UUID {
         if (usersRepository.existsByEmail(email)) {
-
             val user = usersRepository.getByEmail(email)
+            checkPassword(password, user, email)
 
-            val hashedPassword = hashPassword(password, user.passwordSalt)
-            if (hashedPassword != user.password) {
-                throw RuntimeException("invalid password for $email")
+            val device = devicesRepository.getByHardwareId(deviceHardwareId)
+
+            if (device == null) {
+                createDevice(deviceHardwareId, deviceManufacturer, deviceName, user)
+                //TODO: handle case for multiple users and one device
             }
 
             return createNewToken(user)
         } else {
             throw RuntimeException("user $email doesn't exitst")
+        }
+    }
+
+    private fun checkPassword(password: String, user: User, email: String) {
+        val hashedPassword = hashPassword(password, user.passwordSalt)
+        if (hashedPassword != user.password) {
+            throw RuntimeException("invalid password for $email")
         }
     }
 
@@ -68,6 +82,12 @@ class UsersService(
             this.password = hashedPassword
         })
 
+        createDevice(deviceHardwareId, deviceManufacturer, deviceName, user)
+
+        return createNewToken(user)
+    }
+
+    private fun createDevice(deviceHardwareId: String, deviceManufacturer: String, deviceName: String, user: User) {
         devicesRepository.save(Device().apply {
             this.hardwareId = deviceHardwareId
             this.manufacturer = deviceManufacturer
@@ -75,8 +95,6 @@ class UsersService(
             this.user = user
             this.mode = "viewer"
         })
-
-        return createNewToken(user)
     }
 
     private fun hashPassword(password: String, salt: String): String {

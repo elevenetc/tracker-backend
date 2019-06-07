@@ -1,6 +1,7 @@
 package com.elevenetc.tracker.backend.users.rest
 
 import com.elevenetc.tracker.backend.authentication.AuthenticationService
+import com.elevenetc.tracker.backend.devices.rest.DeviceDto
 import com.elevenetc.tracker.backend.motorcycles.rest.MotoDto
 import com.elevenetc.tracker.backend.users.UsersService
 import org.springframework.beans.factory.annotation.Autowired
@@ -31,8 +32,8 @@ class UsersRestController {
     }
 
     @PostMapping("/user/login")
-    fun login(@RequestBody u: Login): UserDto {
-        return UserDto(service.login(u.email, u.password))
+    fun login(@RequestBody b: Login): UserDto {
+        return UserDto(service.login(b.email, b.password, b.device.hardwareId, b.device.name, b.device.manufacturer))
     }
 
     @PostMapping("/user/logout")
@@ -46,7 +47,8 @@ class UsersRestController {
         val user = service.getUser(id)
         return UserDto(
                 body.token,
-                user.motorcycles.map { m -> MotoDto(m) }
+                user.motorcycles.map { m -> MotoDto(m) },
+                user.devices.map { d -> DeviceDto(d) }
         )
     }
 }
