@@ -18,6 +18,8 @@ class DevicesService {
         } else {
             device.mode = mode.value
             devicesRepository.save(device)
+
+            //TODO: make push to updated device
         }
     }
 }

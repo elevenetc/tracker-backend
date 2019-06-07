@@ -1,7 +1,6 @@
 package com.elevenetc.tracker.backend.locations
 
 import com.elevenetc.tracker.backend.devices.DevicesRepository
-import com.elevenetc.tracker.backend.motorcycles.MotorcyclesRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
