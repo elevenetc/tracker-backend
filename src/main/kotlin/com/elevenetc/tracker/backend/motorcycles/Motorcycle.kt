@@ -1,6 +1,6 @@
 package com.elevenetc.tracker.backend.motorcycles
 
-import com.elevenetc.tracker.backend.locations.Location
+import com.elevenetc.tracker.backend.devices.Device
 import com.elevenetc.tracker.backend.users.User
 import java.util.*
 import javax.persistence.*
@@ -21,5 +21,5 @@ class Motorcycle {
     lateinit var user: User
 
     @OneToMany(mappedBy = "motorcycle")
-    lateinit var locations: List<Location>
+    lateinit var devices: List<Device>
 }

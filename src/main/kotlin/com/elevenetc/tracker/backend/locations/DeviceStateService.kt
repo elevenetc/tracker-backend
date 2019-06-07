@@ -1,5 +1,6 @@
 package com.elevenetc.tracker.backend.locations
 
+import com.elevenetc.tracker.backend.devices.DevicesRepository
 import com.elevenetc.tracker.backend.motorcycles.MotorcyclesRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.repository.findByIdOrNull
@@ -7,22 +8,19 @@ import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
-class LocationsService(
+class DeviceStateService(
         @Autowired
-        private val repository: LocationsRepository,
+        private val repository: DeviceStateRepository,
         @Autowired
-        private val motorcyclesRepository: MotorcyclesRepository
+        private val devicesRepository: DevicesRepository
 ) {
-    fun save(lat: Double, lon: Double, motorcycleId: UUID) {
-        repository.save(Location().apply {
+    fun save(lat: Double, lon: Double, battery: Float, deviceId: UUID) {
+        repository.save(DeviceState().apply {
             this.date = Date().time
             this.lat = lat
             this.lon = lon
-            this.motorcycle = motorcyclesRepository.findByIdOrNull(motorcycleId)!!
+            this.battery = battery
+            this.device = devicesRepository.findByIdOrNull(deviceId)!!
         })
-    }
-
-    fun getAll(): List<Location> {
-        return repository.findAll().toList()
     }
 }

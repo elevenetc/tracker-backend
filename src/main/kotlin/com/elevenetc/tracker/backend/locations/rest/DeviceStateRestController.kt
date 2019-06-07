@@ -1,32 +1,29 @@
 package com.elevenetc.tracker.backend.locations.rest
 
 import com.elevenetc.tracker.backend.authentication.AuthenticationService
-import com.elevenetc.tracker.backend.locations.LocationsService
+import com.elevenetc.tracker.backend.locations.DeviceStateService
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-class LocationsRestController {
+class DeviceStateRestController {
 
     @Autowired
-    lateinit var locationsService: LocationsService
+    lateinit var deviceStateService: DeviceStateService
 
     @Autowired
     lateinit var authenticationService: AuthenticationService
 
-    @PostMapping("/location")
-    fun location(@RequestBody body: LocationBody) {
+    @PostMapping("/device/state")
+    fun state(@RequestBody body: DeviceStateBody) {
         authenticationService.verifyAndGet(body.token)
-        locationsService.save(body.lat, body.lon, body.motorcycleId)
+        deviceStateService.save(body.lat, body.lon, body.battery, body.deviceId)
     }
 
-    @GetMapping("/location")
-    fun locations(): List<LocationDto> {
-        return locationsService.getAll().map {
-            LocationDto(it)
-        }
+    @PostMapping("/device/state/mode")
+    fun mode(@RequestBody body: DeviceStateBody) {
+
     }
 }

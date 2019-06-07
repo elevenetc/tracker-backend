@@ -2,6 +2,8 @@ package com.elevenetc.tracker.backend.users
 
 import com.elevenetc.tracker.backend.authentication.AccessToken
 import com.elevenetc.tracker.backend.authentication.AccessTokensRepository
+import com.elevenetc.tracker.backend.devices.Device
+import com.elevenetc.tracker.backend.devices.DevicesRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
@@ -11,7 +13,8 @@ import java.util.*
 @Service
 class UsersService(
         @Autowired private val usersRepository: UsersRepository,
-        @Autowired private val tokensRepository: AccessTokensRepository
+        @Autowired private val tokensRepository: AccessTokensRepository,
+        @Autowired private val devicesRepository: DevicesRepository
 ) {
 
     private val md5 = MessageDigest.getInstance("MD5")
@@ -46,7 +49,14 @@ class UsersService(
         }
     }
 
-    fun createNewUser(email: String, password: String, name: String): UUID {
+    fun createNewUser(
+            email: String,
+            password: String,
+            name: String,
+            deviceHardwareId: String,
+            deviceName: String,
+            deviceManufacturer: String
+    ): UUID {
 
         val salt = UUID.randomUUID().toString()
         val hashedPassword = hashPassword(password, salt)
@@ -56,6 +66,14 @@ class UsersService(
             this.name = name
             this.passwordSalt = salt
             this.password = hashedPassword
+        })
+
+        devicesRepository.save(Device().apply {
+            this.hardwareId = deviceHardwareId
+            this.manufacturer = deviceManufacturer
+            this.name = deviceName
+            this.user = user
+            this.mode = "viewer"
         })
 
         return createNewToken(user)

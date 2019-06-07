@@ -20,7 +20,14 @@ class UsersRestController {
 
     @PostMapping("/user")
     fun register(@RequestBody u: RegisterUser): UserDto {
-        return UserDto(service.createNewUser(u.email, u.password, u.name))
+        return UserDto(service.createNewUser(
+                u.email,
+                u.password,
+                u.name,
+                u.device.hardwareId,
+                u.device.name,
+                u.device.manufacturer
+        ))
     }
 
     @PostMapping("/user/login")

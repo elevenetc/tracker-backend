@@ -1,6 +1,7 @@
 package com.elevenetc.tracker.backend.users
 
 import com.elevenetc.tracker.backend.authentication.AccessToken
+import com.elevenetc.tracker.backend.devices.Device
 import com.elevenetc.tracker.backend.motorcycles.Motorcycle
 import java.util.*
 import javax.persistence.*
@@ -25,8 +26,11 @@ class User {
     var passwordSalt: String = ""
 
     @OneToMany(mappedBy = "user")
-    lateinit var motorcycles: List<Motorcycle>
+    var motorcycles: List<Motorcycle> = mutableListOf()
 
     @OneToMany(mappedBy = "user")
     lateinit var accessTokens: List<AccessToken>
+
+    @OneToMany(mappedBy = "user")
+    var devices: List<Device> = mutableListOf()
 }

@@ -3,7 +3,6 @@ package com.elevenetc.tracker.backend.motorcycles
 import com.elevenetc.tracker.backend.users.User
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import java.util.*
 
 @Service
 class MotorcyclesService(

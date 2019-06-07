@@ -1,4 +1,6 @@
 package com.elevenetc.tracker.backend.devices
 
-class DevicesRepository {
-}
+import org.springframework.data.repository.CrudRepository
+import java.util.*
+
+interface DevicesRepository : CrudRepository<Device, UUID>

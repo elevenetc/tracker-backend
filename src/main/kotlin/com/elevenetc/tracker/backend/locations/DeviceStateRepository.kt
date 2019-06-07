@@ -1,5 +1,6 @@
 package com.elevenetc.tracker.backend.locations
 
 import org.springframework.data.repository.CrudRepository
+import java.util.*
 
-interface LocationsRepository : CrudRepository<Location, Long>
+interface DeviceStateRepository : CrudRepository<DeviceState, UUID>
