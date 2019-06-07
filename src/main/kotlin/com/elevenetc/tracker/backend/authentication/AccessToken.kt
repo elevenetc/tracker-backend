@@ -9,7 +9,7 @@ import javax.persistence.*
 class AccessToken {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    var id: Long = 0
+    var id: UUID? = null
 
     @Column(name = "date")
     var date: Long = 0L

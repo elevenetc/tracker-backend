@@ -2,6 +2,7 @@ package com.elevenetc.tracker.backend.users
 
 import com.elevenetc.tracker.backend.authentication.AccessToken
 import com.elevenetc.tracker.backend.motorcycles.Motorcycle
+import java.util.*
 import javax.persistence.*
 
 @Entity
@@ -9,7 +10,7 @@ import javax.persistence.*
 class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    var id: Long = 0
+    var id: UUID? = null
 
     @Column(name = "name")
     var name: String = ""

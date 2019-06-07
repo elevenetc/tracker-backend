@@ -22,7 +22,7 @@ class MotorcyclesRestController {
         return MotoDto(
                 service.addNewMotorcycle(
                         body.name,
-                        authenticationService.verify(UUID.fromString(body.token))
+                        authenticationService.verifyAndGet(UUID.fromString(body.token))
                 )
         )
     }

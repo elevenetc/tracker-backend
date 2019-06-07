@@ -1,6 +1,7 @@
 package com.elevenetc.tracker.backend.locations
 
 import com.elevenetc.tracker.backend.motorcycles.Motorcycle
+import java.util.*
 import javax.persistence.*
 
 
@@ -9,7 +10,7 @@ import javax.persistence.*
 class Location {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    var id: Long = 0
+    var id: UUID? = null
 
     @Column(name = "lat")
     var lat: Double = 0.0

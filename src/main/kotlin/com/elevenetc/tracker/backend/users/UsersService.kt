@@ -3,6 +3,7 @@ package com.elevenetc.tracker.backend.users
 import com.elevenetc.tracker.backend.authentication.AccessToken
 import com.elevenetc.tracker.backend.authentication.AccessTokensRepository
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import java.security.MessageDigest
 import java.util.*
@@ -15,8 +16,8 @@ class UsersService(
 
     private val md5 = MessageDigest.getInstance("MD5")
 
-    fun delete(id: String) {
-        usersRepository.deleteById(id.toLong())
+    fun getUser(id: UUID): User {
+        return usersRepository.findByIdOrNull(id)!!
     }
 
     fun login(email: String, password: String): UUID {

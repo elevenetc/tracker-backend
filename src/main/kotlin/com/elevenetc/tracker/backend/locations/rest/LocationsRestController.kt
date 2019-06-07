@@ -1,6 +1,6 @@
 package com.elevenetc.tracker.backend.locations.rest
 
-import com.elevenetc.tracker.backend.locations.Location
+import com.elevenetc.tracker.backend.authentication.AuthenticationService
 import com.elevenetc.tracker.backend.locations.LocationsService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.GetMapping
@@ -14,18 +14,19 @@ class LocationsRestController {
     @Autowired
     lateinit var locationsService: LocationsService
 
+    @Autowired
+    lateinit var authenticationService: AuthenticationService
+
     @PostMapping("/location")
-    fun location(@RequestBody location: LocationBody) {
-        val loc = Location()
-        loc.lat = location.lat
-        loc.lon = location.lon
-        locationsService.save(loc)
+    fun location(@RequestBody body: LocationBody) {
+        authenticationService.verifyAndGet(body.token)
+        locationsService.save(body.lat, body.lon, body.motorcycleId)
     }
 
     @GetMapping("/location")
     fun locations(): List<LocationDto> {
         return locationsService.getAll().map {
-            LocationDto(it.lat, it.lon)
+            LocationDto(it)
         }
     }
 }
