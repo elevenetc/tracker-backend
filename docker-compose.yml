@@ -6,32 +6,26 @@ services:
     ports:
       - 3306:3306
     environment:
-      - MYSQL_DATABASE=tracker
-      - MYSQL_USER=dbuser
-      - MYSQL_PASSWORD=password
-      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=${TRACKER_DB_NAME}
+      - MYSQL_USER=${TRACKER_DB_USER_NAME}
+      - MYSQL_PASSWORD=${TRACKER_DB_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${TRACKER_DB_PASSWORD}
     volumes:
       - /data/tracker-database
 
-  adminer:
-    image: adminer
-    restart: always
-    ports:
-      - 8100:8080
-
-
   tracker:
+    build: .
     image: tracker:1.0.0
     ports:
       - 8080:8080
     depends_on:
       - tracker-database
     environment:
-      - TRACKER_DB_URL=tracker-database
-      - TRACKER_DB_PORT=3306
-      - TRACKER_DB_NAME=tracker
-      - TRACKER_DB_USER_NAME=dbuser
-      - TRACKER_DB_PASSWORD=password
-      - TRACKER_ACTIVE_PROFILES=production
+      - TRACKER_DB_URL=${TRACKER_DB_URL}
+      - TRACKER_DB_PORT=${TRACKER_DB_PORT}
+      - TRACKER_DB_NAME=${TRACKER_DB_NAME}
+      - TRACKER_DB_USER_NAME=${TRACKER_DB_USER_NAME}
+      - TRACKER_DB_PASSWORD=${TRACKER_DB_PASSWORD}
+      - TRACKER_ACTIVE_PROFILES=${TRACKER_ACTIVE_PROFILES}
     volumes:
       - /data/tracker
