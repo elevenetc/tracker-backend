@@ -5,10 +5,8 @@ import com.elevenetc.tracker.backend.devices.rest.DeviceDto
 import com.elevenetc.tracker.backend.motorcycles.rest.MotoDto
 import com.elevenetc.tracker.backend.users.UsersService
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
+import java.util.*
 
 @RestController
 class UsersRestController {
@@ -23,11 +21,7 @@ class UsersRestController {
     fun register(@RequestBody u: RegisterUser): UserDto {
         return UserDto(service.createNewUser(
                 u.email,
-                u.password,
-                u.name,
-                u.device.hardwareId,
-                u.device.name,
-                u.device.manufacturer
+                u.password
         ))
     }
 
@@ -37,16 +31,17 @@ class UsersRestController {
     }
 
     @PostMapping("/user/logout")
-    fun logout(@RequestBody u: Logout) {
+    fun logout(@RequestBody u: Logout, @RequestHeader("Token") token:UUID) {
+        authenticationService.verify(token)
         service.logout(u.email, u.token)
     }
 
     @GetMapping("/user")
-    fun info(@RequestBody body: InfoBody): UserDto {
-        val id = authenticationService.verifyAndGetId(body.token)
+    fun info(@RequestHeader("Token") token: UUID): UserDto {
+        val id = authenticationService.verifyAndGetId(token)
         val user = service.getUser(id)
         return UserDto(
-                body.token,
+                token,
                 user.motorcycles.map { m -> MotoDto(m) },
                 user.devices.map { d -> DeviceDto(d) }
         )

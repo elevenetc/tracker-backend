@@ -65,11 +65,7 @@ class UsersService(
 
     fun createNewUser(
             email: String,
-            password: String,
-            name: String,
-            deviceHardwareId: String,
-            deviceName: String,
-            deviceManufacturer: String
+            password: String
     ): UUID {
 
         val salt = UUID.randomUUID().toString()
@@ -81,8 +77,6 @@ class UsersService(
             this.passwordSalt = salt
             this.password = hashedPassword
         })
-
-        createDevice(deviceHardwareId, deviceManufacturer, deviceName, user)
 
         return createNewToken(user)
     }

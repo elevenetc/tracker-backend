@@ -1,5 +1,6 @@
 package com.elevenetc.tracker.backend.devices
 
+import com.elevenetc.tracker.backend.users.User
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
@@ -10,6 +11,15 @@ class DevicesService {
 
     @Autowired
     lateinit var devicesRepository: DevicesRepository
+
+    fun addDevice(user: User, hardwareId: String, manufacturer: String, name: String): Device {
+        return devicesRepository.save(Device().apply {
+            this.hardwareId = hardwareId
+            this.manufacturer = manufacturer
+            this.name = name
+            this.user = user
+        })
+    }
 
     fun setMode(mode: Device.Mode, deviceId: UUID) {
         val device = devicesRepository.findByIdOrNull(deviceId)
