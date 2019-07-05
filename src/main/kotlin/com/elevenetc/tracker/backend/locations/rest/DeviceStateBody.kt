@@ -6,6 +6,5 @@ data class DeviceStateBody(
         val lat: Double,
         val lon: Double,
         val battery: Float,
-        val deviceId: UUID,
-        val token: UUID
+        val deviceId: UUID
 )

@@ -1,6 +1,6 @@
 package com.elevenetc.tracker.backend.users.rest
 
-data class Logout(
+data class LoginDto(
         val email: String,
-        val token: String
+        val password: String
 )

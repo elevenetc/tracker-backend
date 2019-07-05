@@ -24,61 +24,55 @@ class UsersService(
     }
 
     fun login(
-            email: String, password: String,
-            deviceHardwareId: String,
-            deviceName: String,
-            deviceManufacturer: String
-    ): UUID {
+            email: String, password: String
+    ): Pair<AccessToken, User> {
         if (usersRepository.existsByEmail(email)) {
             val user = usersRepository.getByEmail(email)
+            val token = createNewToken(user)
             checkPassword(password, user, email)
-
-            val device = devicesRepository.getByHardwareId(deviceHardwareId)
-
-            if (device == null) {
-                createDevice(deviceHardwareId, deviceManufacturer, deviceName, user)
-                //TODO: handle case for multiple users and one device
-            }
-
-            return createNewToken(user)
+            return Pair(token, user)
         } else {
             throw RuntimeException("user $email doesn't exitst")
         }
     }
 
-    private fun checkPassword(password: String, user: User, email: String) {
-        val hashedPassword = hashPassword(password, user.passwordSalt)
-        if (hashedPassword != user.password) {
-            throw RuntimeException("invalid password for $email")
+    fun logout(userId: UUID, token: UUID) {
+        if (usersRepository.existsById(userId)) {
+            tokensRepository.delete(tokensRepository.getByValue(token))
         }
     }
 
-    fun logout(email: String, token: String) {
-        if (usersRepository.existsByEmail(email)) {
-            tokensRepository.delete(
-                    tokensRepository.getByValue(UUID.fromString(token))
-            )
-        } else {
-            throw RuntimeException("user $email doesn't exitst")
-        }
-    }
-
-    fun createNewUser(
+    fun register(
             email: String,
             password: String
-    ): UUID {
+    ): Pair<AccessToken, User> {
+
+        println("register method")
+
+        if (usersRepository.existsByEmail(email))
+            throw RuntimeException("user with $email already exists")
+
 
         val salt = UUID.randomUUID().toString()
         val hashedPassword = hashPassword(password, salt)
 
+        println("saving...")
+
         val user = usersRepository.save(User().apply {
             this.email = email
-            this.name = name
+            this.name = ""
             this.passwordSalt = salt
             this.password = hashedPassword
         })
 
-        return createNewToken(user)
+        println("saved...")
+        println("creating token...")
+
+        val token = createNewToken(user)
+
+        println("created token")
+
+        return Pair(token, user)
     }
 
     private fun createDevice(deviceHardwareId: String, deviceManufacturer: String, deviceName: String, user: User) {
@@ -95,14 +89,20 @@ class UsersService(
         return String(md5.digest((password + salt).toByteArray()))
     }
 
-    private fun createNewToken(user: User): UUID {
+    private fun createNewToken(user: User): AccessToken {
         val token = UUID.randomUUID()
 
-        tokensRepository.save(AccessToken().apply {
+        return tokensRepository.save(AccessToken().apply {
             this.user = user
             this.value = token
             this.date = Date().time
         })
-        return token
+    }
+
+    private fun checkPassword(password: String, user: User, email: String) {
+        val hashedPassword = hashPassword(password, user.passwordSalt)
+        if (hashedPassword != user.password) {
+            throw RuntimeException("invalid password for $email")
+        }
     }
 }

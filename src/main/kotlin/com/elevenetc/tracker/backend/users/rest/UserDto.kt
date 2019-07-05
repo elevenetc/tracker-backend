@@ -5,7 +5,8 @@ import com.elevenetc.tracker.backend.motorcycles.rest.MotoDto
 import java.util.*
 
 data class UserDto(
-        val token: UUID,
+        val accessToken: UUID,
+        val userId:UUID,
         val motorcycles: List<MotoDto> = emptyList(),
         val devices:List<DeviceDto> = emptyList()
 )

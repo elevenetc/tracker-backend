@@ -15,22 +15,21 @@ class AuthenticationService {
     @Autowired
     lateinit var tokensRepository: AccessTokensRepository
 
-    fun verify(token: UUID) {
-        if (!tokensRepository.existsByValue(token)) {
-            throw RuntimeException("Invalid token $token")
+    fun verify(token: UUID, userId: UUID) {
+        val exists = tokensRepository.existsByValue(token)
+        val accessToken = tokensRepository.getByValue(token)
+        val user = accessToken.user
+        if (!exists || user.id != userId) {
+            throw RuntimeException("Invalid accessToken $accessToken")
         }
     }
 
-    fun verifyAndGetId(token: UUID): UUID {
-        return verifyAndGet(token).id!!
-    }
-
-    fun verifyAndGet(token: UUID): User {
+    fun verifyAndGet(token: UUID, userId: UUID): User {
 
         if (tokensRepository.existsByValue(token)) {
             return tokensRepository.getByValue(token).user
         } else {
-            throw RuntimeException("Invalid token $token")
+            throw RuntimeException("Invalid accessToken $token")
         }
     }
 }

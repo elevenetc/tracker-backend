@@ -17,31 +17,36 @@ class UsersRestController {
     @Autowired
     lateinit var authenticationService: AuthenticationService
 
-    @PostMapping("/user")
+    @PostMapping("/users")
     fun register(@RequestBody u: RegisterUser): UserDto {
-        return UserDto(service.createNewUser(
-                u.email,
-                u.password
-        ))
+        val result = service.register(u.email, u.password)
+        return UserDto(result.first.value, result.second.id!!)
     }
 
-    @PostMapping("/user/login")
-    fun login(@RequestBody b: Login): UserDto {
-        return UserDto(service.login(b.email, b.password, b.device.hardwareId, b.device.name, b.device.manufacturer))
+    @PostMapping("/users/login")
+    fun login(@RequestBody body: LoginDto): UserDto {
+        val result = service.login(body.email, body.password)
+        val token = result.first.value
+        val user = result.second
+        return UserDto(token, user.id!!, user.motorcycles.map { MotoDto(it) }, user.devices.map { DeviceDto(it) })
     }
 
-    @PostMapping("/user/logout")
-    fun logout(@RequestBody u: Logout, @RequestHeader("Token") token:UUID) {
-        authenticationService.verify(token)
-        service.logout(u.email, u.token)
+    @PostMapping("/users/{user-id}/logout")
+    fun logout(
+            @RequestHeader("access-token") token: UUID,
+            @PathVariable("user-id") userId: UUID) {
+        authenticationService.verify(token, userId)
+        service.logout(userId, token)
     }
 
-    @GetMapping("/user")
-    fun info(@RequestHeader("Token") token: UUID): UserDto {
-        val id = authenticationService.verifyAndGetId(token)
-        val user = service.getUser(id)
+    @GetMapping("/users/{id}")
+    fun get(@PathVariable("id") userId: UUID,
+            @RequestHeader("access-token") token: UUID): UserDto {
+        authenticationService.verify(token, userId)
+        val user = service.getUser(userId)
         return UserDto(
                 token,
+                user.id!!,
                 user.motorcycles.map { m -> MotoDto(m) },
                 user.devices.map { d -> DeviceDto(d) }
         )
