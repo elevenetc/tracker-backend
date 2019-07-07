@@ -24,7 +24,7 @@ class DevicesRestController {
 
     @PostMapping("users/{user-id}/devices")
     fun addDevice(
-            device: CreateDeviceDto,
+            @RequestBody device: CreateDeviceDto,
             @RequestHeader("access-token") token: UUID,
             @PathVariable("user-id") userId: UUID
     ): DeviceDto {
@@ -34,6 +34,17 @@ class DevicesRestController {
         return DeviceDto(
                 devicesService.addDevice(user, device.hardwareId, device.manufacturer, device.name)
         )
+    }
+
+    @GetMapping("users/{user-id}/devices")
+    fun getDevices(
+            @RequestHeader("access-token") token: UUID,
+            @PathVariable("user-id") userId: UUID
+    ): List<DeviceDto> {
+
+        val user = authenticationService.verifyAndGet(token, userId)
+
+        return devicesService.getDevices(user).map { DeviceDto(it) }
     }
 
     @PatchMapping("users/{user-id}/devices/{device-id}/mode")

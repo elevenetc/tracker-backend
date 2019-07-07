@@ -13,12 +13,19 @@ class DevicesService {
     lateinit var devicesRepository: DevicesRepository
 
     fun addDevice(user: User, hardwareId: String, manufacturer: String, name: String): Device {
-        return devicesRepository.save(Device().apply {
-            this.hardwareId = hardwareId
-            this.manufacturer = manufacturer
-            this.name = name
-            this.user = user
-        })
+
+        return if (devicesRepository.existsByHardwareId(hardwareId)) {
+            devicesRepository.getByHardwareId(hardwareId)!!
+        } else {
+            devicesRepository.save(Device().apply {
+                this.hardwareId = hardwareId
+                this.manufacturer = manufacturer
+                this.name = name
+                this.user = user
+            })
+        }
+
+
     }
 
     fun setMode(mode: Device.Mode, deviceId: UUID) {
@@ -31,5 +38,9 @@ class DevicesService {
 
             //TODO: make push to updated device
         }
+    }
+
+    fun getDevices(user: User): List<Device> {
+        return devicesRepository.getDevicesByUser(user)
     }
 }

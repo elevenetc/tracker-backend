@@ -13,7 +13,7 @@ class Device {
     @GeneratedValue(strategy = GenerationType.AUTO)
     var id: UUID? = null
 
-    @Column(name = "hardware_id")
+    @Column(name = "hardware_id", unique = true)
     var hardwareId: String = ""
 
     @Column(name = "name")
@@ -44,7 +44,6 @@ class Device {
         constructor(value: String) {
             this.value = value
         }
-
 
 
         companion object {
