@@ -20,7 +20,7 @@ create table motorcycles
 create table devices
 (
     id            binary(16) not null primary key,
-    hardware_id   varchar(255),
+    hardware_id   varchar(255) unique ,
     name          varchar(255),
     manufacturer  varchar(255),
     mode          varchar(255),
