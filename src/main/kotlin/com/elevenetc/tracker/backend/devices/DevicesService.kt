@@ -22,6 +22,7 @@ class DevicesService {
                 this.manufacturer = manufacturer
                 this.name = name
                 this.user = user
+                this.mode = Device.Mode.VIEWER.value
             })
         }
 
