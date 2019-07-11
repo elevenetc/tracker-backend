@@ -8,4 +8,5 @@ interface DevicesRepository : CrudRepository<Device, UUID> {
     fun getByHardwareId(hardwareId: String): Device?
     fun existsByHardwareId(hardwareId: String): Boolean
     fun getDevicesByUser(user: User): List<Device>
+    fun getDevicesById(deviceId: UUID): Device
 }

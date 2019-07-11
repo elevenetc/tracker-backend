@@ -44,4 +44,8 @@ class DevicesService {
     fun getDevices(user: User): List<Device> {
         return devicesRepository.getDevicesByUser(user)
     }
+
+    fun getDevice(deviceId: UUID): Device {
+        return devicesRepository.getDevicesById(deviceId)
+    }
 }

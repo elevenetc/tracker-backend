@@ -36,6 +36,18 @@ class DevicesRestController {
         )
     }
 
+    @GetMapping("users/{user-id}/devices/{device-id}")
+    fun getDevice(
+            @RequestHeader("access-token") token: UUID,
+            @PathVariable("user-id") userId: UUID,
+            @PathVariable("device-id") deviceId: UUID
+    ): DeviceDto {
+
+        authenticationService.verify(token, userId)
+
+        return DeviceDto(devicesService.getDevice(deviceId))
+    }
+
     @GetMapping("users/{user-id}/devices")
     fun getDevices(
             @RequestHeader("access-token") token: UUID,
