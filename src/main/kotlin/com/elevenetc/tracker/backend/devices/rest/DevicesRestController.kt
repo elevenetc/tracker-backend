@@ -59,22 +59,22 @@ class DevicesRestController {
         return devicesService.getDevices(user).map { DeviceDto(it) }
     }
 
-    @PatchMapping("users/{user-id}/devices/{device-id}/mode")
+    @PostMapping("users/{user-id}/devices/{device-id}/mode")
     fun setMode(
-            @RequestBody body: SetMode,
+            @RequestBody body: UpdateMode,
             @RequestHeader("access-token") token: UUID,
             @PathVariable("user-id") userId: UUID,
             @PathVariable("device-id") deviceId: UUID
     ) {
 
-        authenticationService.verify(token, body.userId)
+        authenticationService.verify(token, userId)
 
-        val mode = Device.Mode.of(body.mode)
+        val mode = Device.Mode.of(body.newMode)
 
         if (mode == null) {
-            throw RuntimeException("Invalid mode: $mode")
+            throw RuntimeException("Invalid mode: $mode. Available: ")
         } else {
-            devicesService.setMode(mode, body.deviceId)
+            devicesService.setMode(mode, deviceId)
         }
     }
 
