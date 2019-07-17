@@ -86,6 +86,6 @@ class DevicesRestController {
             @PathVariable("device-id") deviceId: UUID
     ) {
         authenticationService.verify(token, userId)
-        devicesStateService.save(body.lat, body.lon, body.battery, body.deviceId)
+        devicesStateService.save(body.lat, body.lon, body.battery, deviceId)
     }
 }
